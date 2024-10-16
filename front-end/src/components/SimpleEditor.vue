@@ -1,9 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 const contentditableVar = "plaintext-only" // ref("plaintext-only")
 
-function onInp(foo: any) {
-    console.log(foo);
+const editor = useTemplateRef("editor")
+const letters = ref(0)
+
+function change() {
+    if (editor.value instanceof HTMLElement) {
+        const content = editor.value.textContent
+        if (content != null) {
+            letters.value = content.length
+        }
+    }
 }
 
 </script>
@@ -15,6 +23,8 @@ function onInp(foo: any) {
         width: 80vw;
         height: 80vh;
         padding: 6px;
+        text-overflow: clip;
+        overflow-y: scroll;
     }
 
     .toolbar {
@@ -41,5 +51,10 @@ function onInp(foo: any) {
         <button>I</button>
         <button>U</button>
     </span>
-    <div id="SimpleEditor" :contenteditable="contentditableVar" :on-change="onInp"></div>
+    <div id="SimpleEditor" :contenteditable="contentditableVar" @input="change()" ref="editor"></div>
+    <div>
+        <ul>
+            <li>caracteres: {{ letters }}</li>
+        </ul>
+    </div>
 </template>
