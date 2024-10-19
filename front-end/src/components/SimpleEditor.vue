@@ -14,10 +14,24 @@ function change() {
     }
 }
 
+function bolder() {
+    const sel = window.getSelection()
+    if (sel instanceof Selection) {
+        const range = sel.getRangeAt(0)
+        const text = range.toString()
+        range.deleteContents()
+        const span = document.createElement("span")
+        span.style.fontWeight = "bolder"
+        span.textContent = text
+        range.insertNode(span)
+    }
+}
+
 </script>
 
 <style>
     #SimpleEditor {
+        background-color: white;
         border: 1px solid black;
         border-radius: 14px;
         width: 80vw;
@@ -40,21 +54,30 @@ function change() {
         border: 1px solid darkgray;
     }
 
+    .EditorContainer {
+        background-color: darkgray;
+        border-radius: 12px;
+        margin: 5px;
+    }
+
     .toolbar button {
         margin: 3px;
     }
 </style>
 
 <template>
-    <span class="toolbar">
-        <button>B</button>
-        <button>I</button>
-        <button>U</button>
-    </span>
-    <div id="SimpleEditor" :contenteditable="contentditableVar" @input="change()" ref="editor"></div>
-    <div>
-        <ul>
-            <li>caracteres: {{ letters }}</li>
-        </ul>
+    <div class="EditorContainer">
+        <span class="toolbar">
+            <button @click="bolder()"><span style="font-weight: bolder;">B</span></button>
+            <button><span style="font-style: italic;">I</span></button>
+            <button><span style="text-decoration: underline;">U</span></button>
+            <button><span style="text-decoration: none;">C</span></button>
+        </span>
+        <div id="SimpleEditor" :contenteditable="contentditableVar" @input="change()" ref="editor"></div>
+        <div>
+            <ul>
+                <li>caracteres: {{ letters }}</li>
+            </ul>
+        </div>
     </div>
 </template>
