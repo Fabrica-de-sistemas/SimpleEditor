@@ -1,5 +1,6 @@
 npmbuild:
 	npm install --prefix ./front-end
+	npm audit fix --prefix front-end
 	npm run build --prefix ./front-end
 live:
 	npm run dev --prefix ./front-end
