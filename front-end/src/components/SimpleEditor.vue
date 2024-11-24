@@ -11,7 +11,7 @@ const renderRules: [RegExp, string][] = [
     [/\*(.+?)\*|_(.+?)_|__(.+?)__/g, "<span class=\"italic markdown\">$1$2$3</span>"    ],  //italic
     [/~~(.+?)~~/g,                  "<span class=\"strike markdown\">$1$2</span>"       ],  //strike
     [/`(.+?)`/g,                    "<span class=\"inlinecode markdown\">`$1`</span>"   ],  //inline code
-    [/(\r\n|\r|\n)/g,               "<br>\n"                                            ],  //break line
+    [/(\r\n|\r|\n)/g,               "<br>$1"                                            ],  //break line
     [/^(#{1})\s+(.+)$/m,            "<h1 class=\"markdown\">$2</h1>"                    ],  //h1
     [/^(#{2})\s+(.+)$/m,            "<h2 class=\"markdown\">$2</h2>"                    ],  //h2
     [/^(#{3})\s+(.+)$/m,            "<h3 class=\"markdown\">$2</h3>"                    ],  //h3
@@ -67,7 +67,6 @@ function change() {
         if (edit instanceof HTMLElement) {
             const mark = new Markdown("")
             mark.text = mark.reverse(edit)
-            console.log(mark.text)
             preview.value = mark.render()
         }
         const content = editor.value.textContent
@@ -76,15 +75,6 @@ function change() {
         }
     }
 }
-
-document.addEventListener("selectionchange", (_event) => {
-    const sel = document.getSelection()
-    if (sel instanceof Selection) {
-        const range = sel.getRangeAt(0)
-        const container = range.startContainer.parentElement
-    }
-})
-
 </script>
 
 <style>
