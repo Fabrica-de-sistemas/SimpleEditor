@@ -4,8 +4,8 @@ import (
 	"net/http"
 )
 
-func handlerLogin(w http.ResponseWriter, r *http.Request) {
-	buffer := make([]byte, 0, 1024)
+func handlerSignup(w http.ResponseWriter, r *http.Request) {
+	buffer := make([]byte, 0, 2048)
 	if _, err := r.Body.Read(buffer); err != nil {
 		data := errMessage{ErrMessage: "too long"}
 		w.WriteHeader(http.StatusBadRequest)

@@ -1,24 +1,66 @@
 <script setup lang="ts">
+// import { sortAndDeduplicateDiagnostics } from 'typescript'; // Make the build weight more then 1 MB
 import { RouterLink } from 'vue-router';
-function handleSignUp(){}
-let name=""
-let email=""
-let password=""
-let confirmPassword=""
+let name            = defineModel("name", {required: true ,default: ""})
+let email           = defineModel("email", {default: ""})
+let password        = defineModel("password", {default: ""})
+let confirmPassword = defineModel("confirmPassword", {default: ""})
 let isFormValid=false
+async function handleSignUp(){
+  const obj = {
+    name: name.value,
+    email: email.value,
+    password: password.value,
+    confirmPassword: confirmPassword.value,
+  }
+  let response = await fetch("/api/V1/signup", {
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(obj)
+  })
+  let jresponse = await response.json()
+  console.log(jresponse)
+}
+
+function checkValidity() {
+  let valid = true
+  if (name.value.length <= 3) {
+    valid = false
+    //console.log(name);
+  }
+  if (email.value.match(/(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/) == null) {
+    valid = false
+    //console.log(email); 
+  }
+  if (password.value.length < 8) {
+    valid = false
+    //console.log(password);
+  }
+  if (password.value != confirmPassword.value) {
+    valid = false
+  }
+  if (valid) {
+    //console.log("valid");
+  }
+  isFormValid = valid
+}
+
 </script>
 
 <template>
 <div class="auth-container">
     <div class="auth-box">
       <h1>Sign Up</h1>
-      <form @submit.prevent="handleSignUp">
+      <form @submit.prevent="handleSignUp" @change="checkValidity" @input="checkValidity">
         <div class="form-group">
           <label for="name">Full Name</label>
           <input 
             type="text" 
             id="name" 
-            v-model="name" 
+            v-model.capitalize="name" 
             required
             placeholder="Enter your full name"
           >

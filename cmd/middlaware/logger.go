@@ -25,6 +25,6 @@ func LoggerMiddlaware(root http.Handler) http.Handler {
 		root.ServeHTTP(&wrapped, r)
 		end := time.Since(start)
 
-		log.Printf("path: %q\tstatus: %d\tduration: %s", r.URL.Path, wrapped.statusCode, end.String())
+		log.Printf("path: %q\tmethod: %q\tstatus: %d\tduration: %s", r.URL.Path, r.Method, wrapped.statusCode, end.String())
 	})
 }
