@@ -1,6 +1,6 @@
 # Simple Editor
 
-A ideia do projeto é fazer um editor de textos web, com **GO** como linguagem do back-end, e para o front-end pretendo usar Vue e TypeScript
+A ideia do projeto é fazer um editor de textos web, com **GO** como linguagem do back-end, e para o front-end pretendo usar React e TypeScript
 
 O projeto tem as seguintes pretenções:
 1. Ser esteticamente agradável
