@@ -1,7 +1,9 @@
-import { useState } from "react";
-import { createEditor } from "slate";
-import { Editable, Slate, withReact } from "slate-react";
+//import { useState } from "react";
+//import { createEditor } from "slate";
+//import { Editable, Slate, withReact } from "slate-react";
+import MarkdownPreview from "./MarkdownPreviewer";
 
+/*
 export default function Simple() {
     const [ editor ] = useState(() => withReact(createEditor()))
     const initalValue = [
@@ -19,4 +21,8 @@ export default function Simple() {
             <Editable />
         </Slate>
     )
+}*/
+
+export default function Simple() {
+    return <MarkdownPreview/>
 }
