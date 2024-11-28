@@ -1,36 +1,3 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import { ref } from 'vue';
-const isLoggedIn = false
-const username = ""
-function handleLogout(){}
-</script>
-
-<template>
-  <nav class="navbar">
-    <div class="nav-brand">
-      <RouterLink to="/">Simple Text Editor</RouterLink>
-    </div>
-    <div class="nav-links">
-      <RouterLink to="/" class="nav-link">Home</RouterLink>
-      <RouterLink to="/about" class="nav-link">About</RouterLink>
-      <RouterLink to="/config" class="nav-link">Config</RouterLink>
-    </div>
-    <div class="nav-auth">
-      <template v-if="!isLoggedIn">
-        <RouterLink to="/signin" class="auth-button">Sign In</RouterLink>
-        <RouterLink to="/signup" class="auth-button">Sign Up</RouterLink>
-      </template>
-      <template v-else>
-        <span class="username">{{ username }}</span>
-        <button @click="handleLogout" class="auth-button">Logout</button>
-      </template>
-    </div>
-  </nav>
-  <RouterView/>
-</template>
-
-<style scoped>
 .navbar {
   background-color: #4CAF50;
   padding: 1rem 2rem;
@@ -103,4 +70,3 @@ function handleLogout(){}
     justify-content: center;
   }
 }
-</style>
