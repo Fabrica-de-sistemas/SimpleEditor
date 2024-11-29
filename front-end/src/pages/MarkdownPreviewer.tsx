@@ -90,7 +90,6 @@ export default function MarkdownPreview() {
 
 
 const Leaf: (props: RenderLeafProps | any) => React.JSX.Element = ({attributes, children, leaf}) => {
-  console.log(leaf, children, attributes)
   let titleSize = 28
   if (leaf.title) {
     titleSize = 
