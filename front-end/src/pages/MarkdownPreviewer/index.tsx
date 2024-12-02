@@ -1,7 +1,7 @@
 import Prism from 'prismjs'
 import 'prismjs/components/prism-markdown'
 import { useCallback, useMemo, useState } from 'react'
-import { NodeEntry, Text, createEditor } from 'slate'
+import { NodeEntry, Text, createEditor, Range } from 'slate'
 import { withHistory } from 'slate-history'
 import { Editable, RenderLeafProps, Slate, withReact } from 'slate-react'
 import { css } from '@emotion/css'
@@ -12,8 +12,8 @@ type TToken = string | Prism.Token | {content: (string| Prism.Token |TToken)[]}
 export default function MarkdownPreview() {
     const renderLeaf = useCallback((props: RenderLeafProps) => <Leaf {...props} />, [])
     const editor = useMemo(() => withHistory(withReact(createEditor())), [])
-    const decorate: (entry: NodeEntry) => Range[] | any = useCallback(([node, path]) => {
-        const ranges: (Range | any)[] = []
+    const decorate: (entry: NodeEntry) => Range[] = useCallback(([node, path]) => {
+        const ranges: Range[] = []
 
         if (!Text.isText(node)) {
             return ranges
@@ -52,7 +52,7 @@ export default function MarkdownPreview() {
     const [value, setValue] = useState(slateObj)
 
     return (
-        <Slate editor={editor} initialValue={value} onChange={value => {setValue(value);console.log(value)}}>
+        <Slate editor={editor} initialValue={value} onChange={value => {setValue(value)}}>
             <Editable
                 decorate={decorate}
                 renderLeaf={renderLeaf}

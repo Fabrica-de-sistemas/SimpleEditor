@@ -1,6 +1,6 @@
 import { Descendant } from "slate";
 
-export const slateObj : Descendant[] | any[] = [
+export const slateObj: (Descendant | {type?: string, children: {text: string}[]})[] = [
   {
     type: 'paragraph',
     children: [
