@@ -8,13 +8,13 @@ import './style.css'
 
 const hideRed = Decoration.mark({
   attributes: {
-    style: "background-color: red !important;"
+    style: "background-color: red !important; display: none;"
   }
 })
 
 const hideBlue = Decoration.mark({
   attributes: {
-    style: "background-color: blue !important;"
+    style: "background-color: blue !important; display: none;"
   }
 })
 type liteNode = {
@@ -23,7 +23,7 @@ type liteNode = {
   to: number
 }
 
-function hideMarkers(view: EditorView) {
+function hideEmphasisMarkers(view: EditorView) {
   const marks: Range<Decoration>[] = []
   let nodeBefore: liteNode | null = null
   const pos = view.state.selection.main.head
@@ -53,15 +53,6 @@ function hideMarkers(view: EditorView) {
         )
       },
       leave(node) {
-        if (!node.name.endsWith("Mark")) {
-          return
-        }
-        if (nodeBefore !== null) {
-          if (node.from === nodeBefore.from) {
-            return
-          }
-        }
-        console.log(nodeBefore, nodeBefore?.from, {name:node.name, from:node.from, to:node.to}, node.from == nodeBefore?.from, 'leave')
         nodeBefore = structuredClone({name: node.name, from: node.from, to: node.to})
       },
     })
@@ -73,11 +64,11 @@ const hidePlugin = ViewPlugin.fromClass(class {
   decorations: DecorationSet
 
   constructor(view: EditorView) {
-    this.decorations = hideMarkers(view)
+    this.decorations = hideEmphasisMarkers(view)
   }
 
   update(update: ViewUpdate) {
-    this.decorations = hideMarkers(update.view)
+    this.decorations = hideEmphasisMarkers(update.view)
   }
 
 }, {
@@ -89,7 +80,7 @@ export default function MarkdownPreview() {
   const [value, setValue] = useState("")
   const onChange = useCallback((value: string, viewUpdate: ViewUpdate) => {
     setValue(value)
-    hideMarkers(viewUpdate.view)
+    hideEmphasisMarkers(viewUpdate.view)
   }, [])
   const onSelect = useCallback(()=>{},[])
   return (
