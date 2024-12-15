@@ -1,77 +1,95 @@
-import CodeMirror, { Decoration, Range, ViewUpdate } from '@uiw/react-codemirror'
+import CodeMirror, { Decoration, DecorationSet, Range, ViewPlugin, ViewUpdate } from '@uiw/react-codemirror'
+import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
 import { EditorView } from '@uiw/react-codemirror'
+import { syntaxTree } from '@codemirror/language'
+import { useCallback, useState } from 'react'
+//import { SyntaxNodeRef } from '@lezer/common'
 import './style.css'
 
-import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
-import { useCallback, useState } from 'react'
-import { syntaxTree } from '@codemirror/language'
-import { SyntaxNodeRef } from '@lezer/common'
-
-const hideMark = Decoration.mark({
+const hideRed = Decoration.mark({
   attributes: {
-    style: "color: red"
+    style: "background-color: red !important;"
   }
 })
 
+const hideBlue = Decoration.mark({
+  attributes: {
+    style: "background-color: blue !important;"
+  }
+})
+type liteNode = {
+  name: string,
+  from: number,
+  to: number
+}
 
-function hide(view: EditorView) {
+function hideMarkers(view: EditorView) {
   const marks: Range<Decoration>[] = []
-  let nodeBefore: SyntaxNodeRef | null = null
+  let nodeBefore: liteNode | null = null
+  const pos = view.state.selection.main.head
   for (const {from, to} of view.visibleRanges) {
     syntaxTree(view.state).iterate({
       from, to,
       enter: (node) => {
-        //console.log(node, node.name)
-        const pos = view.state.selection.main.head
-        /*console.log(node.type, node.name, node.node, view.state.doc.sliceString(node.from, node.to), 'TREE: ', node.tree, pos)
-        if (node.name == "StrongEmphasis" || node.name == "Emphasis") {
-          if (pos <= node.to && node.from <= pos) {
-            //console.log(`i'm here! pos: ${pos}; from: ${node.from}; to: ${node.to}`, node.name, node.tree)
-          } else {
-            marks.push(hideMark.range(node.from, node.to))
-          }
-          //console.log(node.type, view.state.doc.sliceString(node.from, node.to), node.tree)
-          }*/
         if (!node.name.endsWith("Mark")) {
-          nodeBefore = node
           return
         }
         if (nodeBefore == null) {
-          nodeBefore = node
           return
         }
         if (nodeBefore.name !== node.name) {
-          nodeBefore = node
           return
         }
-        if (nodeBefore.from <= pos && pos <= node.to) {
-          nodeBefore = node
+        if ((nodeBefore.from <= pos && pos <= node.to)) {
           return
         }
+        if (nodeBefore.from == node.to) {
+          return
+        }
+
         marks.push(
-          hideMark.range(nodeBefore.from, nodeBefore.to),
-          hideMark.range(node.from, node.to)
+          hideBlue.range(nodeBefore.from, nodeBefore.to),
+          hideRed.range(node.from, node.to)
         )
-        nodeBefore = node
+      },
+      leave(node) {
+        if (!node.name.endsWith("Mark")) {
+          return
+        }
+        if (nodeBefore !== null) {
+          if (node.from === nodeBefore.from) {
+            return
+          }
+        }
+        console.log(nodeBefore, nodeBefore?.from, {name:node.name, from:node.from, to:node.to}, node.from == nodeBefore?.from, 'leave')
+        nodeBefore = structuredClone({name: node.name, from: node.from, to: node.to})
       },
     })
   }
-  return marks
+  return Decoration.set(marks)
 }
-/*
-const addDecor = StateEffect.define<{from: number, to: number}>({
-  map: ({from, to}, change) => ({
-    from: change.mapPos(from), to: change.mapPos(to)
-  })
-})*/
+
+const hidePlugin = ViewPlugin.fromClass(class {
+  decorations: DecorationSet
+
+  constructor(view: EditorView) {
+    this.decorations = hideMarkers(view)
+  }
+
+  update(update: ViewUpdate) {
+    this.decorations = hideMarkers(update.view)
+  }
+
+}, {
+  decorations: instance => instance.decorations
+})
 
 export default function MarkdownPreview() {
 
   const [value, setValue] = useState("")
   const onChange = useCallback((value: string, viewUpdate: ViewUpdate) => {
     setValue(value)
-    console.log(viewUpdate.state.selection.main.head)
-    hide(viewUpdate.view)
+    hideMarkers(viewUpdate.view)
   }, [])
   const onSelect = useCallback(()=>{},[])
   return (
@@ -81,6 +99,7 @@ export default function MarkdownPreview() {
       onSelect={onSelect}
       extensions={[
         markdown({ base: markdownLanguage }),
+        hidePlugin,
         EditorView.lineWrapping,
         EditorView.theme({
           '.cm-scroller': {
