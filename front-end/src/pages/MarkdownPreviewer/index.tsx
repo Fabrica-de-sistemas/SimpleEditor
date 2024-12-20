@@ -2,7 +2,7 @@ import CodeMirror, { ViewUpdate } from '@uiw/react-codemirror'
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
 import { EditorView } from '@uiw/react-codemirror'
 import { useCallback, useState } from 'react'
-import { hidePlugin, resizeHeadersPlugin } from './plugins'
+import { codeMonoPlugin, hideHeadersMarkersPlugin, hidePlugin, resizeHeadersPlugin } from './plugins'
 import './style.css'
 
 export default function MarkdownPreview() {
@@ -19,6 +19,8 @@ export default function MarkdownPreview() {
         markdown({ base: markdownLanguage }),
         hidePlugin,
         resizeHeadersPlugin,
+        codeMonoPlugin,
+        hideHeadersMarkersPlugin,
         EditorView.lineWrapping,
         EditorView.theme({
           '.cm-scroller': {

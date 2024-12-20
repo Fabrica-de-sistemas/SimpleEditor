@@ -14,6 +14,12 @@ const hideBlue = Decoration.mark({
   }
 })
 
+const monoFamily = Decoration.mark({
+  attributes: {
+    style: "font-family: monomonospace, monospace !important;"
+  }
+})
+
 const headerN = (n: number) => Decoration.mark({
   attributes: {
     style: `font-size: ${3 - (2/5)*(n - 1)}em`
@@ -48,6 +54,35 @@ function resizeHeaders(view: EditorView) {
       },
     })
   }
+  return Decoration.set(marks)
+}
+
+function hideHeadersMarkers(view: EditorView) {
+  const marks: Range<Decoration>[] = []
+  const dont: (number | undefined)[] = []
+  const pos = view.state.selection.main.head
+  
+  const node = syntaxTree(view.state).resolve(pos, 1)
+  const ATXHorMark = (node.name.startsWith("ATXHeading") || node.name == "HeaderMark" )?
+    node: null
+
+  if (ATXHorMark !== null) {  
+    const mark = (ATXHorMark.name.startsWith("ATXHeading")) ?
+      ATXHorMark.getChild("HeaderMark") : ATXHorMark
+    dont.push(mark?.from)
+  }
+
+  for (const {from, to} of view.visibleRanges) {
+    syntaxTree(view.state).iterate({
+      from, to,
+      enter(node) {
+        if (node.name == "HeaderMark" && !dont.includes(node.from)) {
+          marks.push(hideBlue.range(node.from, node.to + 1))
+        }
+      },
+    })
+  }
+
   return Decoration.set(marks)
 }
 
@@ -112,6 +147,56 @@ export const resizeHeadersPlugin = ViewPlugin.fromClass(class {
 
   update(update: ViewUpdate) {
     this.decorations = resizeHeaders(update.view)
+  }
+
+}, {
+  decorations: instance => instance.decorations
+})
+
+function codeMono(view: EditorView) {
+  const marks: Range<Decoration>[] = []
+  for (const {from, to} of view.visibleRanges) {
+    syntaxTree(view.state).iterate({
+      from, to,
+      enter: (node) => {
+        //console.log(node.type)
+        if (!['FencedCode', 'CodeText', 'InlineCode'].includes(node.name)) {
+          return
+        }
+        if (node)
+        marks.push(monoFamily.range(node.from, node.to))
+      },
+    })
+  }
+  return Decoration.set(marks)
+}
+
+export const codeMonoPlugin = ViewPlugin.fromClass(class {
+  decorations: DecorationSet
+
+  constructor(view: EditorView) {
+    this.decorations = codeMono(view)
+  }
+
+  update(update: ViewUpdate) {
+    this.decorations = codeMono(update.view)
+  }
+
+}, {
+  decorations: instance => instance.decorations
+})
+
+
+
+export const hideHeadersMarkersPlugin = ViewPlugin.fromClass(class {
+  decorations: DecorationSet
+
+  constructor(view: EditorView) {
+    this.decorations = hideHeadersMarkers(view)
+  }
+
+  update(update: ViewUpdate) {
+    this.decorations = hideHeadersMarkers(update.view)
   }
 
 }, {
