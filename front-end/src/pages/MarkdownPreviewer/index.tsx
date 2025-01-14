@@ -1,20 +1,12 @@
-import CodeMirror, { ViewUpdate } from '@uiw/react-codemirror'
+import CodeMirror from '@uiw/react-codemirror'
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
 import { EditorView } from '@uiw/react-codemirror'
-import { useCallback, useState } from 'react'
 import { codeMonoPlugin, hideHeadersMarkersPlugin, hidePlugin, resizeHeadersPlugin } from './plugins'
 import './style.css'
 
 export default function MarkdownPreview() {
-
-  const [value, setValue] = useState("")
-  const onChange = useCallback((value: string, _viewUpdate: ViewUpdate) => {
-    setValue(value)
-  }, [])
   return (
     <CodeMirror
-      value={value}
-      onChange={onChange}
       extensions={[
         markdown({ base: markdownLanguage }),
         hidePlugin,
