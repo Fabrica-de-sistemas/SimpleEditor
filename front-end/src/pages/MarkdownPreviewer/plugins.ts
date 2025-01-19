@@ -22,7 +22,7 @@ const monoFamily = Decoration.mark({
 
 const headerN = (n: number) => Decoration.mark({
   attributes: {
-    style: `font-size: ${3 - (2/5)*(n - 1)}em`
+    style: `font-size: ${2 - (1/5)*(n - 1)}em`
   }
 })
 
@@ -159,7 +159,7 @@ function codeMono(view: EditorView) {
     syntaxTree(view.state).iterate({
       from, to,
       enter: (node) => {
-        //console.log(node.type)
+        console.log(node.name)
         if (!['FencedCode', 'CodeText', 'InlineCode'].includes(node.name)) {
           return
         }
