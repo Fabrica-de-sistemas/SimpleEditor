@@ -60,9 +60,9 @@ function resizeHeaders(view: EditorView) {
 function hideHeadersMarkers(view: EditorView) {
   const marks: Range<Decoration>[] = []
   const dont: (number | undefined)[] = []
-  const pos = view.state.selection.main.head
+  const cursorPos = view.state.selection.main.head
   
-  const node = syntaxTree(view.state).resolve(pos, 1)
+  const node = syntaxTree(view.state).resolve(cursorPos, 1)
   const ATXHorMark = (node.name.startsWith("ATXHeading") || node.name == "HeaderMark" )?
     node: null
 
@@ -89,7 +89,7 @@ function hideHeadersMarkers(view: EditorView) {
 function hideEmphasisMarkers(view: EditorView) {
   const marks: Range<Decoration>[] = []
   let nodeBefore: liteNode | null = null
-  const pos = view.state.selection.main.head
+  const cursorPos = view.state.selection.main.head
   for (const {from, to} of view.visibleRanges) {
     syntaxTree(view.state).iterate({
       from, to,
@@ -103,7 +103,7 @@ function hideEmphasisMarkers(view: EditorView) {
         if (nodeBefore.name !== node.name) {
           return
         }
-        if ((nodeBefore.from <= pos && pos <= node.to)) {
+        if ((nodeBefore.from <= cursorPos && cursorPos <= node.to)) {
           return
         }
         if (nodeBefore.from == node.to) {
