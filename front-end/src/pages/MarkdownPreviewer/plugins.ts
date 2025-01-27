@@ -225,7 +225,7 @@ function hideHeadersMarkers(view: EditorView) {
   return Decoration.set(marks)
 }
 
-function hideEmphasisMarkers(view: EditorView) {
+function hideMarkersPairs(view: EditorView) {
   const marks: Range<Decoration>[] = []
   let nodeBefore: liteNode | null = null
   const cursorPos = view.state.selection.main.head
@@ -262,15 +262,15 @@ function hideEmphasisMarkers(view: EditorView) {
   return Decoration.set(marks)
 }
 
-export const hidePlugin = ViewPlugin.fromClass(class {
+export const hideMarkersPairsPlugin = ViewPlugin.fromClass(class {
   decorations: DecorationSet
 
   constructor(view: EditorView) {
-    this.decorations = hideEmphasisMarkers(view)
+    this.decorations = hideMarkersPairs(view)
   }
 
   update(update: ViewUpdate) {
-    this.decorations = hideEmphasisMarkers(update.view)
+    this.decorations = hideMarkersPairs(update.view)
   }
 
 }, {
