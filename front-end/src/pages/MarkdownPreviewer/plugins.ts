@@ -2,6 +2,7 @@ import { Decoration, DecorationSet, Range, ViewPlugin, ViewUpdate, WidgetType } 
 import { EditorView } from '@uiw/react-codemirror'
 import { syntaxTree } from '@codemirror/language'
 import katex from 'katex'
+import 'katex/dist/katex.min.css'
 
 const hideRed = Decoration.mark({
   attributes: {
@@ -54,7 +55,7 @@ class LatetWidget extends WidgetType {
     try {
       katex.render(this.math, span, {
         throwOnError: false,
-        output: 'mathml',
+        output: 'html',
         displayMode: this.displayMode
       })
     } catch (e) {
