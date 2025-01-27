@@ -68,7 +68,7 @@ const LatexLanguageExtension: MarkdownExtension = {
         {
             name: INLINE_MATH_DOLLAR,
             parse(cx, next, pos) {
-                if (next !== 36 || cx.char(pos + 1) === 36){
+                if (next !== 36 || cx.char(pos + 1) === 36 || cx.char(pos - 1) === 36){
                     return -1;
                 }
 
@@ -145,12 +145,19 @@ const LatexLanguageExtension: MarkdownExtension = {
     wrap: parseMixed((node, _input) => {
         const delimiterLength = DELIMITER_LENGTH[node.type.name]
         if (delimiterLength) {
+            const from = node.from + delimiterLength;
+            const   to = node.to   - delimiterLength;
+
+            if (from === to) {
+                return null;
+            }
+
             return {
                 parser: TEX_LANGUAGE.parser,
                 overlay: [
                     {
-                        from: node.from + delimiterLength,
-                        to: node.to - delimiterLength
+                        from: from,
+                        to: to
                     }
                 ],
             } as NestedParse;
