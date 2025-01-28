@@ -99,6 +99,9 @@ function latexRender(view: EditorView) {
         widgets.push(latexDecoration.range(node.to))
       },
       leave(node) {
+        if (node.type.name === 'Escape') {
+          return
+        }
         nodeBefore = structuredClone({name: node.name, from: node.from, to: node.to})
       },
     })
