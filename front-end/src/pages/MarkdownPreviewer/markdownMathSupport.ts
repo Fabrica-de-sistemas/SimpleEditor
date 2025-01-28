@@ -25,7 +25,7 @@ const BLOCK_MATH_BRACKET  =  'BlockMathBracket';
 /**
  * @constant {Object<string, number>} - Lengths of each delimiter type.
  */
-const DELIMITER_LENGTH: Record<string, number> = {
+export const DELIMITER_LENGTH: Record<string, number> = {
     [INLINE_MATH_DOLLAR] :  1,
     [INLINE_MATH_BRACKET]:  3,
     [BLOCK_MATH_DOLLAR]  :  2,

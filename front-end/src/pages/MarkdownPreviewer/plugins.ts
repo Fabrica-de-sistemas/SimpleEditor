@@ -1,4 +1,5 @@
 import { Decoration, DecorationSet, Range, ViewPlugin, ViewUpdate, WidgetType } from '@uiw/react-codemirror'
+import { DELIMITER_LENGTH } from './markdownMathSupport'
 import { EditorView } from '@uiw/react-codemirror'
 import { syntaxTree } from '@codemirror/language'
 import katex from 'katex'
@@ -39,7 +40,6 @@ type liteNode = {
 //////////////////////////////////////////////
 
 const LATEX_TAGS = ["InlineMathDollar", "InlineMathBracket", "BlockMathDollar", "BlockMathBracket"]
-const LATEX_MARKERS_TAGS = LATEX_TAGS.map(tag => `${tag}Mark`)
 
 class LatetWidget extends WidgetType {
   constructor(readonly math: string, readonly displayMode: boolean = false){
@@ -71,39 +71,28 @@ class LatetWidget extends WidgetType {
 
 function latexRender(view: EditorView) {
   const widgets: Range<Decoration>[] = []
-  let nodeBefore: liteNode | null = null
   const text = view.state.doc.toString()
   const cursorPos = view.state.selection.main.head
   for (const {from, to} of view.visibleRanges) {
     syntaxTree(view.state).iterate({
       from, to,
       enter: (node) => {
-        if (nodeBefore === null) {
+        if (!LATEX_TAGS.includes(node.type.name)) {
           return
         }
-        if (!LATEX_MARKERS_TAGS.includes(node.type.name)) {
-          return
-        }
-        if (!LATEX_MARKERS_TAGS.includes(nodeBefore.name)) {
-          return
-        }
-        
-        if ((nodeBefore.from <= cursorPos && cursorPos <= node.to)) {
+        if ((node.from <= cursorPos && cursorPos <= node.to)) {
           return
         } 
-        const math = text.substring(nodeBefore.to, node.from)
+        const math = text.substring(
+          node.from + DELIMITER_LENGTH[node.type.name],
+          node.to - DELIMITER_LENGTH[node.type.name]
+        )
         const latexDecoration = Decoration.widget({
             widget: new LatetWidget(math, node.type.name.startsWith("Block")),
             side: 1
           })
         widgets.push(latexDecoration.range(node.to))
-      },
-      leave(node) {
-        if (node.type.name === 'Escape') {
-          return
-        }
-        nodeBefore = structuredClone({name: node.name, from: node.from, to: node.to})
-      },
+      }
     })
   }
   return Decoration.set(widgets)
