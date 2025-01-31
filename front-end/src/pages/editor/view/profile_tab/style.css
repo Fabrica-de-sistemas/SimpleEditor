@@ -1,0 +1,7 @@
+.profile-tab{
+  padding: 32px;
+  background-color: #ffffff8a;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

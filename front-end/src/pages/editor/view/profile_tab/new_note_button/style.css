@@ -1,0 +1,20 @@
+button{
+  display: flex;
+  width: 100%;
+  border: 0;
+  background-color: darkgreen;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  font-size: larger;
+  padding: 4px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: filter 200ms ease-in-out;
+  font-weight: 800;
+}
+
+button:hover{
+  filter: brightness(1.2);
+}

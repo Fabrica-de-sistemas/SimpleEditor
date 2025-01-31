@@ -1,0 +1,22 @@
+.search_input{
+  margin-bottom: 16px;
+  display: flex;
+  border-radius: 8px;
+  gap: 8px;
+  padding: 8px;
+  background-color: #adadad86;
+  align-items: center;
+  font-size: larger;
+}
+
+.search_input > input{
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  color: #646464;
+}
+
+.search_input > input:focus-visible{
+  border: none;
+  outline: none;
+}

@@ -1,0 +1,13 @@
+.configurations_list > h4{
+  margin-bottom: 12px;
+  color: gray;
+}
+
+.configurations_list li{
+  display: flex;
+  list-style: none;
+  gap: 8px;
+  align-items: center;
+  color: gray;
+  margin-top: 8px;
+}
