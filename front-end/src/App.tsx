@@ -17,8 +17,8 @@ function App() {
       </Routes> */}
       <Routes>
         <Route path='/' element={<Simple/>}>
-          <Route path='*' element={<NotFound/>}/>
         </Route>
+        <Route path='/*' element={<NotFound/>}/>
       </Routes>
     </BrowserRouter>
   )

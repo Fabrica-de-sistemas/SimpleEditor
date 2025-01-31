@@ -17,7 +17,7 @@ export default function Simple() {
     // )
 
     return (
-      <main>
+      <main className="editor-main">
         <ProfileTab></ProfileTab>
         <MainTab></MainTab>
         <NotesTab></NotesTab>

@@ -2,21 +2,20 @@ html{
   background-color: #cfcfcf;
 }
 
-
-.main-tab__container{
-  flex: 2;
-  border-radius: 8px;
-}
-
-main{
+.editor-main{
   padding: 36px;
   display: flex;
   height: 100vh;
   gap: 64px;
 }
 
-main > section{
+.editor-main > *{
   background-color: #FFF;
   flex: 1;
   border-radius: 16px;
+}
+
+.main-tab__container{
+  flex: 2;
+  border-radius: 8px;
 }
