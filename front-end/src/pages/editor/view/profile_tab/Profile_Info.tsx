@@ -1,4 +1,4 @@
-import Circle from "../components/Circle";
+import Circle from "../../../../components/Circle";
 import "./profile_info/style.css";
 
 export default function ProfileInfo() {

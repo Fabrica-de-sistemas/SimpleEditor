@@ -19,8 +19,10 @@ export default function Simple() {
     return (
       <main className="editor-main">
         <ProfileTab></ProfileTab>
-        <MainTab></MainTab>
-        <NotesTab></NotesTab>
+        
+          <MainTab></MainTab>
+          <NotesTab></NotesTab>
+        
       </main>
     )
 }

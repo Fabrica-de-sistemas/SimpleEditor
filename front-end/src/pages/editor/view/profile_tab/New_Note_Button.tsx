@@ -1,4 +1,4 @@
-import Circle from "../components/Circle";
+import Circle from "../../../../components/Circle";
 import "./new_note_button/style.css";
 
 export default function NewNoteButton() {

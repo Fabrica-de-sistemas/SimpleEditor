@@ -1,4 +1,4 @@
-import Circle from "../components/Circle";
+import Circle from "../../../../components/Circle";
 import "./search_input/style.css";
 
 export default function SearchInput() {

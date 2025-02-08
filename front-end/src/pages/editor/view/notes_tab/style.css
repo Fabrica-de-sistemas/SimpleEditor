@@ -1,0 +1,14 @@
+.notes-tab{
+  padding: 32px 16px 8px;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  margin: 0 0 128px;
+}
+
+.notes-tab h3{
+  font-weight: bolder;
+  font-size: 24px;
+  margin-bottom: 8px;
+  margin-left: 4px;
+}

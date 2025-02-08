@@ -1,4 +1,4 @@
-import Circle from "../components/Circle";
+import Circle from "../../../../components/Circle";
 import "./configurations/style.css";
 
 export default function ConfigurationsList() {

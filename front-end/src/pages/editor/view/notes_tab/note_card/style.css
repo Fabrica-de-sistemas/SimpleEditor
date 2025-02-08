@@ -1,0 +1,28 @@
+.note-card{
+  margin-top: 8px;
+  background-color: #adadad86;
+    border-radius: 16px;
+    position: relative;
+    padding: 16px;
+    width: max-content;
+    max-width: 100%;
+}
+
+.note-card h4{
+  font-size: 24px;
+  font-weight: bold;
+}
+.note-card p{
+  display: grid;
+  overflow: hidden;
+  text-wrap: nowrap;
+  max-width: 100%;
+  width: max-content;
+  text-overflow: ellipsis;
+
+}
+
+.circle.edit_icon {
+  position: absolute;
+  right: 0;
+}
