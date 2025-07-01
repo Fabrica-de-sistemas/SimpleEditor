@@ -1,3 +1,7 @@
+.configurations_list{
+  margin-top: 128px;
+}
+
 .configurations_list > h4{
   margin-bottom: 12px;
   color: gray;

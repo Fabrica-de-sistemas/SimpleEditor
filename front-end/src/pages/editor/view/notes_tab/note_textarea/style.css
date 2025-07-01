@@ -1,5 +1,5 @@
 .notes-tab_textarea{
-  
+  min-height: fit-content;  
   background-color: #adadad86;
   border-radius: 16px;
   margin: 16px 0 8px;

@@ -4,6 +4,7 @@
   flex-direction: column;
   min-width: 300px;
   margin: 0 0 128px;
+  overflow-y: auto;
 }
 
 .notes-tab h3{

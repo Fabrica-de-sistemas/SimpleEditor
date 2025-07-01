@@ -2,6 +2,13 @@ html{
   background-color: #cfcfcf;
 }
 
+
+*{
+  scrollbar-width: thin;
+      
+}
+
+
 .editor-main{
   padding: 36px;
   display: flex;
@@ -14,6 +21,7 @@ html{
   flex: 1;
   border-radius: 16px;
   flex-shrink: 0;
+  overflow-y: auto;
   
 }
 

@@ -11,6 +11,7 @@
 .note-card h4{
   font-size: 24px;
   font-weight: bold;
+  margin-right: 12px;
 }
 .note-card p{
   display: grid;
@@ -24,5 +25,5 @@
 
 .circle.edit_icon {
   position: absolute;
-  right: 0;
+  right: 12px;
 }
